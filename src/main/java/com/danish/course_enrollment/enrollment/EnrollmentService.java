@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class EnrollmentService {
 
-    private final EnrollmentRespository enrollmentRespository;
+    private final EnrollmentRepository enrollmentRepository;
 
-    public EnrollmentService(EnrollmentRespository enrollmentRespository) {
-        this.enrollmentRespository = enrollmentRespository;
+    public EnrollmentService(EnrollmentRepository enrollmentRepository) {
+        this.enrollmentRepository = enrollmentRepository;
     }
 
     public void saveStudent(Enrollment enrollment){
-        enrollmentRespository.save(enrollment);
+        enrollmentRepository.save(enrollment);
     }
 }

@@ -2,6 +2,7 @@ package com.danish.course_enrollment.course;
 
 
 import com.danish.course_enrollment.enrollment.Enrollment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -21,9 +22,10 @@ public class Course {
 
     private String instructor;
 
-    private String maxCapacity;
+    private Integer maxCapacity;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private List<Enrollment> enrollments;
 
 
@@ -31,7 +33,7 @@ public class Course {
     }
 
 
-    public Course(Long id, String title, String instructor, String maxCapacity, List<Enrollment> enrollments) {
+    public Course(Long id, String title, String instructor, Integer maxCapacity, List<Enrollment> enrollments) {
         this.id = id;
         this.title = title;
         this.instructor = instructor;
@@ -63,11 +65,11 @@ public class Course {
         this.instructor = instructor;
     }
 
-    public String getMaxCapacity() {
+    public Integer getMaxCapacity() {
         return maxCapacity;
     }
 
-    public void setMaxCapacity(String maxCapacity) {
+    public void setMaxCapacity(Integer maxCapacity) {
         this.maxCapacity = maxCapacity;
     }
 

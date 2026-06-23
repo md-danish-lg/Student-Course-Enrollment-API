@@ -2,6 +2,7 @@ package com.danish.course_enrollment.student;
 
 
 import com.danish.course_enrollment.enrollment.Enrollment;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ public class Student {
     private LocalDate addedDate;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Enrollment> enrollments;
 
 
@@ -88,11 +90,11 @@ public class Student {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(email, student.email) && Objects.equals(addedDate, student.addedDate) && Objects.equals(enrollments, student.enrollments);
+        return Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(email, student.email) && Objects.equals(addedDate, student.addedDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, addedDate, enrollments);
+        return Objects.hash(id, name, email, addedDate);
     }
 }
