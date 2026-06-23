@@ -1,4 +1,6 @@
 package com.danish.course_enrollment.enrollment;
 
-public interface EnrollmentRespository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface EnrollmentRespository extends JpaRepository<Enrollment, Long> {
 }
