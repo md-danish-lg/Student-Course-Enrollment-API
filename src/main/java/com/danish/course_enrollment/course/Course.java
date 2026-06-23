@@ -1,8 +1,10 @@
 package com.danish.course_enrollment.course;
 
 
+import com.danish.course_enrollment.enrollment.Enrollment;
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,14 +23,20 @@ public class Course {
 
     private String maxCapacity;
 
+    @OneToMany(mappedBy = "course")
+    private List<Enrollment> enrollments;
+
+
     public Course() {
     }
 
-    public Course(Long id, String title, String instructor, String maxCapacity) {
+
+    public Course(Long id, String title, String instructor, String maxCapacity, List<Enrollment> enrollments) {
         this.id = id;
         this.title = title;
         this.instructor = instructor;
         this.maxCapacity = maxCapacity;
+        this.enrollments = enrollments;
     }
 
     public Long getId() {
@@ -63,6 +71,13 @@ public class Course {
         this.maxCapacity = maxCapacity;
     }
 
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
 
     @Override
     public boolean equals(Object o) {

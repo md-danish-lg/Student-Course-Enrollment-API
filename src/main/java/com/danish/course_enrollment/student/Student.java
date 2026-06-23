@@ -1,9 +1,11 @@
 package com.danish.course_enrollment.student;
 
 
+import com.danish.course_enrollment.enrollment.Enrollment;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -21,6 +23,10 @@ public class Student {
 
     private LocalDate addedDate;
 
+    @OneToMany(mappedBy = "student")
+    private List<Enrollment> enrollments;
+
+
 
     @PrePersist
     private void onCreate(){
@@ -30,11 +36,12 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String name, String email, LocalDate addedDate) {
+    public Student(Long id, String name, String email, LocalDate addedDate, List<Enrollment> enrollments) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.addedDate = addedDate;
+        this.enrollments = enrollments;
     }
 
     public Long getId() {
@@ -69,15 +76,23 @@ public class Student {
         this.addedDate = addedDate;
     }
 
+    public List<Enrollment> getEnrollments() {
+        return enrollments;
+    }
+
+    public void setEnrollments(List<Enrollment> enrollments) {
+        this.enrollments = enrollments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Student student = (Student) o;
-        return Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(email, student.email) && Objects.equals(addedDate, student.addedDate);
+        return Objects.equals(id, student.id) && Objects.equals(name, student.name) && Objects.equals(email, student.email) && Objects.equals(addedDate, student.addedDate) && Objects.equals(enrollments, student.enrollments);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, email, addedDate);
+        return Objects.hash(id, name, email, addedDate, enrollments);
     }
 }
