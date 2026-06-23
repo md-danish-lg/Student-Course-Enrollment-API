@@ -1,10 +1,8 @@
 package com.danish.course_enrollment.enrollment;
 
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/enrollments")
@@ -17,9 +15,13 @@ public class EnrollmentController {
     }
 
     @PostMapping
-    public void enrollStudent(@RequestBody Enrollment enrollment){
-        enrollmentService.saveStudent(enrollment);
+    public void enrollStudent(@RequestBody EnrollmentRequest enrollmentRequest){
+        enrollmentService.enrollNewStudent(enrollmentRequest);
+    }
 
-
+    @PatchMapping("{id}/grade")
+    public ResponseEntity<String> assignStudentGrade(@PathVariable Long id, @RequestBody String grade){
+        enrollmentService.assignGrade(id, grade);
+        return ResponseEntity.ok("grade changed successfully");
     }
 }

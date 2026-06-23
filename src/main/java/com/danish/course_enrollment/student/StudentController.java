@@ -1,9 +1,9 @@
 package com.danish.course_enrollment.student;
 
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.danish.course_enrollment.course.Course;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,5 +20,25 @@ public class StudentController {
     public List<Student> getAllStudents(){
         return studentService.getStudents();
     }
+
+    @GetMapping("/{id}/courses")
+    public List<Course> getStudentCourse(@PathVariable Long id){
+        return studentService.getAllCoursesByStudentId(id);
+    }
+
+    @PostMapping
+    public void addStudent(@RequestBody Student student){
+        studentService.addNewStudent(student);
+    };
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> removeStudent(@PathVariable Long id){
+        studentService.removeStudentById(id);
+        return ResponseEntity.ok("User Deleted Successfully");
+
+    }
+
+
+
 
 }

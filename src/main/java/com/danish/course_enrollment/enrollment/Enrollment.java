@@ -3,10 +3,12 @@ package com.danish.course_enrollment.enrollment;
 
 import com.danish.course_enrollment.course.Course;
 import com.danish.course_enrollment.student.Student;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "enrollments")
@@ -17,10 +19,12 @@ public class Enrollment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="student_id", nullable = false)
+    @JsonIgnore
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="course_id", nullable = false)
+    @JsonIgnore
     private Course course;
 
     @Column(nullable = false)
@@ -91,11 +95,11 @@ public class Enrollment {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Enrollment that = (Enrollment) o;
-        return Objects.equals(id, that.id) && Objects.equals(student, that.student) && Objects.equals(course, that.course) && Objects.equals(enrolledAt, that.enrolledAt) && Objects.equals(grade, that.grade);
+        return Objects.equals(id, that.id) && Objects.equals(enrolledAt, that.enrolledAt) && Objects.equals(grade, that.grade);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, student, course, enrolledAt, grade);
+        return Objects.hash(id, enrolledAt, grade);
     }
 }
