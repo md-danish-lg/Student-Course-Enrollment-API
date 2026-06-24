@@ -22,10 +22,6 @@ public class EnrollmentService {
         this.studentRepository = studentRepository;
     }
 
-    public void saveStudent(Enrollment enrollment){
-        enrollmentRepository.save(enrollment);
-    }
-
     public void enrollNewStudent(EnrollmentRequest enrollmentRequest) {
         if ((enrollmentRequest.getStudentId() == null && enrollmentRequest.getCourseId() == null)){
             throw new IllegalStateException();
@@ -41,8 +37,14 @@ public class EnrollmentService {
         if (!(courseRepository.existsById(courseId) && studentRepository.existsById(studentId))){
             throw new IllegalStateException();
         };
+
+
         Student student = studentRepository.findById(studentId).orElseThrow();
         Course course = courseRepository.findById(courseId).orElseThrow();
+        int currentEnrollments = enrollmentRepository.findByCourseId(courseId).size();
+        if(currentEnrollments >= course.getMaxCapacity()){
+            throw new IllegalStateException();
+        }
 
         Enrollment enrollment = new Enrollment();
 

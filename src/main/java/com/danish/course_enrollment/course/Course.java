@@ -25,6 +25,7 @@ public class Course {
     private Integer maxCapacity;
 
     @OneToMany(mappedBy = "course")
+    @JsonIgnore
     private List<Enrollment> enrollments;
 
 

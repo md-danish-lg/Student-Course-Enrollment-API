@@ -27,7 +27,7 @@ public class CourseService {
     }
 
     public List<Student> findStudentByCourseId(Long courseId) {
-        return enrollmentRepository.findByCourseId(courseId)
+        return enrollmentRepository.findByCourseIdWithStudent(courseId)
                 .stream()
                 .map(Enrollment::getStudent)
                 .toList();

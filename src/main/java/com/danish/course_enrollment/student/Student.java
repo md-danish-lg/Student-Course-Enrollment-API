@@ -25,6 +25,7 @@ public class Student {
     private LocalDate addedDate;
 
     @OneToMany(mappedBy = "student")
+    @JsonIgnore
     private List<Enrollment> enrollments;
 
 
