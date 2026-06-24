@@ -29,7 +29,7 @@ public class StudentService {
 
     public void removeStudentById(Long id) {
         if(!(studentRepository.existsById(id))){
-            throw new IllegalStateException();
+            throw new StudentNotFoundException(id);
         }
 
         studentRepository.deleteById(id);
