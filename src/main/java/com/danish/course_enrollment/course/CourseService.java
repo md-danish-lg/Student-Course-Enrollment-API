@@ -27,6 +27,9 @@ public class CourseService {
     }
 
     public List<Student> findStudentByCourseId(Long courseId) {
+        if(!(courseRepository.existsById(courseId))){
+            throw new CourseNotFoundException(courseId);
+        }
         return enrollmentRepository.findByCourseIdWithStudent(courseId)
                 .stream()
                 .map(Enrollment::getStudent)

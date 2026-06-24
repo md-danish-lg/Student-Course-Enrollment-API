@@ -3,7 +3,6 @@ package com.danish.course_enrollment.student;
 import com.danish.course_enrollment.course.Course;
 import com.danish.course_enrollment.enrollment.Enrollment;
 import com.danish.course_enrollment.enrollment.EnrollmentRepository;
-import com.danish.course_enrollment.enrollment.EnrollmentService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,6 +36,9 @@ public class StudentService {
     }
 
     public List<Course> getAllCoursesByStudentId(Long studentId) {
+        if (!(studentRepository.existsById(studentId))){
+            throw new StudentNotFoundException(studentId);
+        }
         return enrollmentRepository.findByStudentIdWithCourse(studentId)
                 .stream()
                 .map(Enrollment::getCourse)

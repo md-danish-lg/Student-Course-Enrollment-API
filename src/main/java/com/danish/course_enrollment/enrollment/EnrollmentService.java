@@ -2,12 +2,14 @@ package com.danish.course_enrollment.enrollment;
 
 
 import com.danish.course_enrollment.course.Course;
+import com.danish.course_enrollment.course.CourseNotFoundException;
 import com.danish.course_enrollment.course.CourseRepository;
 import com.danish.course_enrollment.student.Student;
+import com.danish.course_enrollment.student.StudentNotFoundException;
 import com.danish.course_enrollment.student.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+
 
 @Service
 public class EnrollmentService {
@@ -23,8 +25,8 @@ public class EnrollmentService {
     }
 
     public void enrollNewStudent(EnrollmentRequest enrollmentRequest) {
-        if ((enrollmentRequest.getStudentId() == null && enrollmentRequest.getCourseId() == null)){
-            throw new IllegalStateException();
+        if ((enrollmentRequest.getStudentId() == null || enrollmentRequest.getCourseId() == null)){
+            throw new EmptyInputException("Student ID or Course ID Not specified");
         }
 
         Long courseId = enrollmentRequest.getCourseId();
@@ -32,18 +34,20 @@ public class EnrollmentService {
 
 
         if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)){
-            throw new IllegalStateException("Student already enrolled");
+            throw new AlreadyEnrolledException(studentId, courseId);
         }
-        if (!(courseRepository.existsById(courseId) && studentRepository.existsById(studentId))){
-            throw new IllegalStateException();
-        };
+        if(!(courseRepository.existsById(courseId))) {
+            throw new CourseNotFoundException(courseId);
+        }if(!(studentRepository.existsById(studentId))) {
+            throw new StudentNotFoundException(studentId);
+        }
 
 
         Student student = studentRepository.findById(studentId).orElseThrow();
         Course course = courseRepository.findById(courseId).orElseThrow();
         int currentEnrollments = enrollmentRepository.findByCourseId(courseId).size();
         if(currentEnrollments >= course.getMaxCapacity()){
-            throw new IllegalStateException();
+            throw new MaxCapacityException(courseId, course.getMaxCapacity());
         }
 
         Enrollment enrollment = new Enrollment();
