@@ -2,6 +2,12 @@ package com.danish.course_enrollment.enrollment;
 
 public class EnrollmentRequest {
 
+
+    public EnrollmentRequest(Long studentId, Long courseId) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+    }
+
     private Long studentId;
     private Long courseId;
 
