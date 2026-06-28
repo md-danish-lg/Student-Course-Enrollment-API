@@ -60,7 +60,7 @@ public class EnrollmentService {
     }
 
     public void assignGrade(Long id, String grade) {
-        Enrollment enrollment = enrollmentRepository.findById(id).orElseThrow();
+        Enrollment enrollment = enrollmentRepository.findById(id).orElseThrow(()-> new EnrollmentNotFoundException(id));
 
         enrollment.setGrade(grade);
         enrollmentRepository.save(enrollment);

@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -158,9 +157,10 @@ class EnrollmentServiceTest {
 
     @Test
     void throwsWhenEnrollmentNotFound(){
-
-        assertThatThrownBy(()->underTest.assignGrade(1L, "A"))
-                .isInstanceOf(NoSuchElementException.class);
+        Long id = 1L;
+        assertThatThrownBy(()->underTest.assignGrade(id, "A"))
+                .isInstanceOf(EnrollmentNotFoundException.class)
+                .hasMessageContaining("Enrollment with id: " + id +" Not Found");
     }
 
     @Test
