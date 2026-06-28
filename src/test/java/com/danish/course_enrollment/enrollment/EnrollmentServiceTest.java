@@ -1,10 +1,5 @@
 package com.danish.course_enrollment.enrollment;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.*;
-
 import com.danish.course_enrollment.course.Course;
 import com.danish.course_enrollment.course.CourseNotFoundException;
 import com.danish.course_enrollment.course.CourseRepository;
@@ -16,13 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.internal.matchers.Null;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EnrollmentServiceTest {
@@ -46,7 +44,7 @@ class EnrollmentServiceTest {
         Long id=1L;
         EnrollmentRequest request = new EnrollmentRequest(id, id);
 
-        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(true);
+        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(false);
         when(courseRepository.existsById(id))
                 .thenReturn(true);
         when(studentRepository.existsById(id)).thenReturn(false);
@@ -62,7 +60,7 @@ class EnrollmentServiceTest {
         Long id=2L;
         EnrollmentRequest request = new EnrollmentRequest(id, id);
 
-        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(true);
+        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(false);
         when(courseRepository.existsById(id))
                 .thenReturn(false);
 
@@ -79,7 +77,7 @@ class EnrollmentServiceTest {
         EnrollmentRequest request = new EnrollmentRequest(id, id);
 
 
-        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(false);
+        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(true);
         assertThatThrownBy(()->underTest.enrollNewStudent(request))
                 .isInstanceOf(AlreadyEnrolledException.class)
                 .hasMessageContaining("Student with id: " + id + " already Enrolled in Course ID: " + id);
@@ -104,7 +102,7 @@ class EnrollmentServiceTest {
         );
 
 
-        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(true);
+        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(false);
         when(courseRepository.existsById(id)).thenReturn(true);
         when(studentRepository.existsById(id)).thenReturn(true);
         when(studentRepository.findById(id)).thenReturn(Optional.of(student));
@@ -138,7 +136,7 @@ class EnrollmentServiceTest {
         );
 
 
-        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(true);
+        when(enrollmentRepository.existsByStudentIdAndCourseId(id, id)).thenReturn(false);
         when(courseRepository.existsById(id)).thenReturn(true);
         when(studentRepository.existsById(id)).thenReturn(true);
         when(studentRepository.findById(id)).thenReturn(Optional.of(student));
@@ -161,7 +159,7 @@ class EnrollmentServiceTest {
     @Test
     void throwsWhenEnrollmentNotFound(){
 
-        assertThatThrownBy(()->enrollmentRepository.findById(1L).orElseThrow())
+        assertThatThrownBy(()->underTest.assignGrade(1L, "A"))
                 .isInstanceOf(NoSuchElementException.class);
     }
 

@@ -33,7 +33,7 @@ public class EnrollmentService {
         Long studentId = enrollmentRequest.getStudentId();
 
 
-        if (!(enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId))){
+        if (enrollmentRepository.existsByStudentIdAndCourseId(studentId, courseId)){
             throw new AlreadyEnrolledException(studentId, courseId);
         }
         if(!(courseRepository.existsById(courseId))) {
